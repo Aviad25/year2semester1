@@ -1,0 +1,116 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jan 02, 2023 at 02:28 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `fit4u`
+--
+CREATE DATABASE IF NOT EXISTS `fit4u` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `fit4u`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE IF NOT EXISTS `admin` (
+  `user_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(25) DEFAULT NULL,
+  `user_password` varchar(25) DEFAULT NULL,
+  `user_phone` varchar(11) DEFAULT NULL,
+  `user_email` varchar(50) DEFAULT NULL,
+  `user_adress` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+CREATE TABLE IF NOT EXISTS `cart` (
+  `cart_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `cart_totalprice` varchar(25) DEFAULT NULL,
+  `cart_date` date DEFAULT NULL,
+  `cus_id` smallint(6) NOT NULL,
+  PRIMARY KEY (`cart_id`),
+  KEY `cus_id` (`cus_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE IF NOT EXISTS `customer` (
+  `cus_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `cus_name` varchar(25) DEFAULT NULL,
+  `cus_phone` varchar(11) DEFAULT NULL,
+  `cus_adress` varchar(50) DEFAULT NULL,
+  `cus_email` varchar(50) DEFAULT NULL,
+  `cus_password` varchar(50) DEFAULT NULL,
+  `cus_gender` enum('female','male','n/a') DEFAULT NULL,
+  PRIMARY KEY (`cus_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+CREATE TABLE IF NOT EXISTS `payment` (
+  `visa` varchar(16) DEFAULT NULL,
+  `cart_id` smallint(6) NOT NULL,
+  KEY `cart_id` (`cart_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE IF NOT EXISTS `product` (
+  `prod_id` int(11) NOT NULL AUTO_INCREMENT,
+  `prod_desc` varchar(100) DEFAULT NULL,
+  `prod_num` varchar(20) DEFAULT NULL,
+  `prod_price` varchar(20) DEFAULT NULL,
+  `prod_quan` varchar(20) DEFAULT NULL,
+  `prod_gender` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`prod_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`cus_id`) REFERENCES `customer` (`cus_id`);
+
+--
+-- Constraints for table `payment`
+--
+ALTER TABLE `payment`
+  ADD CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`);
+COMMIT;
